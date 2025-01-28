@@ -1,39 +1,47 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import {
   fetchCampers,
   selectCampers,
   selectIsLoading,
 } from "../../redux/campers/campersSlice";
-import { useEffect } from "react";
-import CamperDetailsPage from "../CamperDetailsPage/CamperDetailsPage";
+import FilterBar from "../../components/FIlterBar/FilterBar";
+
+import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
+import styles from "./CatalogPage.module.css";
+import { CamperList } from "../../components/CamperList/CamperList";
 
 const CatalogPage = () => {
   const dispatch = useDispatch();
   const campers = useSelector(selectCampers);
   const isLoading = useSelector(selectIsLoading);
 
-  useEffect(() => {
-    dispatch(fetchCampers());
-  }, [dispatch]);
+  const [filters, setFilters] = useState({
+    location: "",
+    withAC: false,
+    withBathroom: false,
+  });
 
-  if (isLoading) {
-    return <h2>Please wait...</h2>;
-  }
-  if (!Array.isArray(campers)) {
-    return <p>No campers found</p>;
-  }
+  console.log(campers);
+
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    dispatch(fetchCampers({ page, filters }));
+  }, [dispatch, page, filters]);
+
+  const handleLoadMore = () => {
+    setPage((prev) => prev + 1);
+  };
+  console.log(campers);
+
   return (
-    <div>
-      <h2>CampersCatalog</h2>
-      {isLoading && <p>Please wait...</p>}
-      <ul>
-        {campers.map((camper) => (
-          <li key={camper.id}>
-            <CamperDetailsPage key={camper.id} {...camper} />
-          </li>
-        ))}
-      </ul>
+    <div className={styles.catalog}>
+      <FilterBar filters={filters} setFilters={setFilters} />
+      <CamperList campers={campers} />
+      <LoadMoreButton onClick={handleLoadMore} isLoading={isLoading} />
     </div>
   );
 };
+
 export default CatalogPage;
