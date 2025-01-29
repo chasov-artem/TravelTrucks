@@ -10,36 +10,30 @@ import FilterBar from "../../components/FIlterBar/FilterBar";
 import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
 import styles from "./CatalogPage.module.css";
 import { CamperList } from "../../components/CamperList/CamperList";
+import { selectFilters } from "../../redux/filters/filtersSlice";
 
 const CatalogPage = () => {
   const dispatch = useDispatch();
   const campers = useSelector(selectCampers);
   const isLoading = useSelector(selectIsLoading);
-
-  const [filters, setFilters] = useState({
-    location: "",
-    withAC: false,
-    withBathroom: false,
-  });
-
-  console.log(campers);
+  const filters = useSelector(selectFilters);
 
   const [page, setPage] = useState(1);
-
+  console.log(campers);
   useEffect(() => {
-    dispatch(fetchCampers({ page, filters }));
+    dispatch(fetchCampers({ page, ...filters }));
   }, [dispatch, page, filters]);
 
-  const handleLoadMore = () => {
-    setPage((prev) => prev + 1);
-  };
   console.log(campers);
 
   return (
     <div className={styles.catalog}>
-      <FilterBar filters={filters} setFilters={setFilters} />
+      <FilterBar />
       <CamperList campers={campers} />
-      <LoadMoreButton onClick={handleLoadMore} isLoading={isLoading} />
+      {!isLoading && Array.isArray(campers) && campers.length > 0 && (
+        <LoadMoreButton onClick={() => setPage((prev) => prev + 1)} />
+      )}
+      {isLoading && <p>Loading...</p>}
     </div>
   );
 };

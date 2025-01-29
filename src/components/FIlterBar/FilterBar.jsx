@@ -1,12 +1,29 @@
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./FilterBar.module.css";
+import {
+  selectFilters,
+  setAmenities,
+  setLocation,
+  setType,
+} from "../../redux/filters/filtersSlice";
 
-const FilterBar = ({ filters, setFilters }) => {
+const FilterBar = () => {
+  const dispatch = useDispatch();
+  const filters = useSelector(selectFilters);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFilters((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+    if (name === "location") {
+      dispatch(setLocation(value));
+    } else if (name === "type") {
+      dispatch(setType(value));
+    } else {
+      const updatedAmenities = checked
+        ? [...filters.amenities, value]
+        : filters.amenities.filter((amenity) => amenity !== value);
+      dispatch(setAmenities(updatedAmenities));
+    }
   };
 
   return (
@@ -19,11 +36,18 @@ const FilterBar = ({ filters, setFilters }) => {
         onChange={handleChange}
         className={styles.input}
       />
+      <select name="type" value={filters.type} onChange={handleChange}>
+        <option value="">All types</option>
+        <option value="campervan">Campervan</option>
+        <option value="caravan">Caravan</option>
+        <option value="motorhome">Motorhome</option>
+      </select>
       <label>
         <input
           type="checkbox"
-          name="withAC"
-          checked={filters.withAC}
+          name="amenities"
+          value="AC"
+          checked={filters.amenities.includes("AC")}
           onChange={handleChange}
         />
         With AC
@@ -31,8 +55,9 @@ const FilterBar = ({ filters, setFilters }) => {
       <label>
         <input
           type="checkbox"
-          name="withBathroom"
-          checked={filters.withBathroom}
+          name="amenities"
+          value="Bathroom"
+          checked={filters.amenities.includes("Bathroom")}
           onChange={handleChange}
         />
         With Bathroom
