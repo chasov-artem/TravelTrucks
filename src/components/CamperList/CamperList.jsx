@@ -1,13 +1,14 @@
 import CamperCard from "../CamperCard/CamperCard";
+import s from "./CamperList.module.css";
 
 export const CamperList = ({ campers }) => {
   if (!Array.isArray(campers)) {
     return <p>No campers available</p>;
   }
   return (
-    <ul>
+    <ul className={s.camperList}>
       {campers.map((camper) => (
-        <CamperCard key={camper.id} camper={camper} />
+        <CamperCard key={`camper-${camper.id}`} camper={camper} />
       ))}
     </ul>
   );

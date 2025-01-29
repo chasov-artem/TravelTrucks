@@ -61,7 +61,12 @@ const FilterBar = () => {
         <label className={s.filterLabel}>Amenities</label>
         <div className={s.amenitiesGroup}>
           {amenitiesList.map((amenity) => (
-            <div key={amenity} className={s.checkboxWrap}>
+            <div
+              key={amenity}
+              className={`${s.checkboxWrap} ${
+                filters.amenities.includes(amenity) ? s.active : ""
+              }`}
+            >
               <label htmlFor={amenity} className={s.amenityLabel}>
                 <input
                   type="checkbox"

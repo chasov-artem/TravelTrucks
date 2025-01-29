@@ -65,7 +65,8 @@
 }
 
 .checkboxWrap:hover,
-.checkboxWrap:active {
+.checkboxWrap:active,
+.checkboxWrap.active {
   border-color: #e44848;
 }
 
