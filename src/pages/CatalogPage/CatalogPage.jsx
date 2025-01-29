@@ -8,7 +8,7 @@ import {
 import FilterBar from "../../components/FIlterBar/FilterBar";
 
 import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
-import styles from "./CatalogPage.module.css";
+import s from "./CatalogPage.module.css";
 import { CamperList } from "../../components/CamperList/CamperList";
 import { selectFilters } from "../../redux/filters/filtersSlice";
 
@@ -27,7 +27,7 @@ const CatalogPage = () => {
   console.log(campers);
 
   return (
-    <div className={styles.catalog}>
+    <div className={s.catalog}>
       <FilterBar />
       <CamperList campers={campers} />
       {!isLoading && Array.isArray(campers) && campers.length > 0 && (
