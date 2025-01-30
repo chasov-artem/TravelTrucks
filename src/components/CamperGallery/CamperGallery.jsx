@@ -1,8 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import s from "./CamperGallery.module.css";
 
 const CamperGallery = ({ images = [], camper }) => {
   const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   if (!images.length) {
     return <p>No images available</p>;
@@ -40,7 +54,7 @@ const CamperGallery = ({ images = [], camper }) => {
         </div>
       )}
 
-      <p>{camper.description}</p>
+      <p className={s.description}>{camper.description}</p>
     </>
   );
 };
