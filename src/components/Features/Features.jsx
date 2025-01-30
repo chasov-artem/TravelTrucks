@@ -1,20 +1,42 @@
 import s from "./Features.module.css";
 
 const Features = ({ camper }) => {
+  // Функція для перетворення першої літери на велику
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  // Функція для форматування назв (наприклад, "panelTruck" -> "Panel truck")
+  const formatName = (name) => {
+    return name
+      .replace(/([A-Z])/g, " $1")
+      .split(" ")
+      .map((word) => capitalizeFirstLetter(word))
+      .join(" ");
+  };
+
+  // Функція для форматування значень (наприклад, "5.4m" -> "5.4 m")
+  const formatValue = (value) => {
+    return value.replace(/(\d)([a-zA-Z])/, "$1 $2");
+  };
+
+  // Функція для відображення аменіті
   const renderAmenities = () => {
     const amenitiesList = [];
 
+    // Додаємо transmission та engine завжди
     amenitiesList.push(
-      <li key="transmission">
-        <strong>Transmission:</strong> {camper.transmission}
+      <li className={s.engine} key="transmission">
+        {formatName(camper.transmission)}
       </li>
     );
     amenitiesList.push(
-      <li key="engine">
-        <strong>Engine:</strong> {camper.engine}
+      <li className={s.engine} key="engine">
+        {formatName(camper.engine)}
       </li>
     );
 
+    // Додаємо інші аменіті, якщо вони true
     const optionalAmenities = [
       "AC",
       "bathroom",
@@ -30,8 +52,8 @@ const Features = ({ camper }) => {
     optionalAmenities.forEach((amenity) => {
       if (camper[amenity] === true) {
         amenitiesList.push(
-          <li key={amenity}>
-            <strong>{amenity}:</strong> Yes
+          <li className={s.vehicleItem} key={amenity}>
+            {formatName(amenity)}
           </li>
         );
       }
@@ -42,28 +64,42 @@ const Features = ({ camper }) => {
 
   return (
     <div className={s.features}>
-      <h3>Vehicle details</h3>
-      <ul>{renderAmenities()}</ul>
+      <ul className={s.vehicleList}>{renderAmenities()}</ul>
 
-      <h3>Technical details</h3>
-      <ul>
+      <h3 className={s.detailsTitle}>Vehicle details</h3>
+      <ul className={s.detailsList}>
         <li>
-          <strong>Form:</strong> {camper.form}
+          <div className={s.detailsItems}>
+            <span>Form </span>
+            <span>{formatName(camper.form)}</span>
+          </div>
         </li>
         <li>
-          <strong>Length:</strong> {camper.length}
+          <div className={s.detailsItems}>
+            <span>Length</span> <span>{formatValue(camper.length)}</span>
+          </div>
         </li>
         <li>
-          <strong>Width:</strong> {camper.width}
+          <div className={s.detailsItems}>
+            <span>Width</span> <span>{formatValue(camper.width)}</span>
+          </div>
         </li>
         <li>
-          <strong>Height:</strong> {camper.height}
+          <div className={s.detailsItems}>
+            <span>Height </span>
+            <span>{formatValue(camper.height)}</span>
+          </div>
         </li>
         <li>
-          <strong>Tank:</strong> {camper.tank}
+          <div className={s.detailsItems}>
+            <span>Tank</span> <span>{formatValue(camper.tank)}</span>
+          </div>
         </li>
         <li>
-          <strong>Consumption:</strong> {camper.consumption}
+          <div className={s.detailsItems}>
+            <span>Consumption</span>
+            <span>{formatValue(camper.consumption)}</span>
+          </div>
         </li>
       </ul>
     </div>

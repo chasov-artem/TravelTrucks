@@ -52,14 +52,15 @@ const CamperDetailsPage = () => {
           Reviews
         </button>
       </div>
+      <div className={s.componentWrapper}>
+        {activeTab === "features" ? (
+          <Features camper={camper} />
+        ) : (
+          <ReviewsSection reviews={camper.reviews || []} />
+        )}
 
-      {activeTab === "features" ? (
-        <Features camper={camper} />
-      ) : (
-        <ReviewsSection reviews={camper.reviews || []} />
-      )}
-
-      <BookingForm id={camper.id} />
+        <BookingForm id={camper.id} />
+      </div>
     </div>
   );
 };
