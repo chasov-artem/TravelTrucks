@@ -5,9 +5,9 @@ const ReviewsSection = ({ reviews }) => {
     <div className={s.reviews}>
       <h3>Customer Reviews</h3>
       {reviews.length > 0 ? (
-        reviews.map((review) => (
-          <div key={review.id} className={s.review}>
-            <strong>{review.author}</strong>
+        reviews.map((review, index) => (
+          <div key={review.id || `review-${index}`} className={s.review}>
+            <strong>{review.reviewer_name}</strong>
             <p>{review.comment}</p>
           </div>
         ))
@@ -17,4 +17,5 @@ const ReviewsSection = ({ reviews }) => {
     </div>
   );
 };
+
 export default ReviewsSection;

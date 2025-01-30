@@ -17,10 +17,10 @@ const CamperDetailsPage = () => {
   const favorites = useSelector(selectFavorites);
 
   useEffect(() => {
-    if (!campers.lenght) {
+    if (!campers.length) {
       dispatch(fetchCampers());
     }
-  }, [dispatch, campers.lenght]);
+  }, [dispatch, campers.length]);
 
   const camper = campers.find((camper) => camper.id === id);
 
@@ -31,12 +31,12 @@ const CamperDetailsPage = () => {
 
   return (
     <div className={s.container}>
-      <CamperGallery images={camper.images} />
       <CamperInfo
         camper={camper}
         isFavourite={favorites.some((fav) => fav.id === camper.id)}
       />
-      <ReviewsSection reviews={camper.reviews} />
+      <CamperGallery images={camper.gallery || []} camper={camper} />
+      <ReviewsSection reviews={camper.reviews || []} />
       <BookingForm id={camper.id} />
     </div>
   );
