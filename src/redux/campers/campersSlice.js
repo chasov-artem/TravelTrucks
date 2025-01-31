@@ -9,7 +9,7 @@ export const fetchCampers = createAsyncThunk(
 const campersSlice = createSlice({
   name: "campers",
   initialState: {
-    items: [],
+    items: [], // Масив кемперів (серіалізований)
     isLoading: false,
     error: null,
   },
@@ -21,17 +21,12 @@ const campersSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCampers.fulfilled, (state, action) => {
-        if (action.payload && Array.isArray(action.payload.items)) {
-          state.items = [...state.items, ...action.payload.items];
-        } else {
-          console.error("Unexpected API response format:", action.payload);
-          state.items = [];
-        }
         state.isLoading = false;
+        state.items = action.payload; // Зберігаємо масив кемперів
       })
       .addCase(fetchCampers.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload; // Зберігаємо повідомлення про помилку
       });
   },
 });

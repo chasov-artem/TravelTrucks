@@ -1,6 +1,9 @@
 import s from "./Reviews.module.css";
 
 const ReviewsSection = ({ reviews }) => {
+  if (!reviews.length) {
+    return <p>No reviews available</p>;
+  }
   return (
     <div className={s.reviews}>
       {reviews.length > 0 ? (
