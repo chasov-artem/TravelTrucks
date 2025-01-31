@@ -17,15 +17,15 @@ const CatalogPage = () => {
   const dispatch = useDispatch();
   const campers = useSelector(selectCampers);
   const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError); // Додано обробку помилок
+  const error = useSelector(selectError);
   const filters = useSelector(selectFilters);
 
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     const formattedFilters = {
-      page: page || 1, // Значення за замовчуванням для `page`
-      limit: 4, // Обмеження на кількість елементів на сторінці
+      page: page || 1,
+      limit: 3,
       location: filters.location || undefined,
       type: filters.type || undefined,
       amenities: filters.amenities || [],
@@ -39,16 +39,18 @@ const CatalogPage = () => {
   }
 
   if (error) {
-    return <p>Error: {error}</p>; // Виводимо повідомлення про помилку
+    return <p>Error: {error}</p>;
   }
 
   return (
     <div className={s.catalog}>
       <FilterBar />
-      <CamperList campers={campers} />
-      {!isLoading && Array.isArray(campers) && campers.length > 0 && (
-        <LoadMoreButton onClick={() => setPage((prev) => prev + 1)} />
-      )}
+      <div className={s.listBtn}>
+        <CamperList campers={campers} />
+        {!isLoading && Array.isArray(campers) && campers.length > 0 && (
+          <LoadMoreButton onClick={() => setPage((prev) => prev + 1)} />
+        )}
+      </div>
     </div>
   );
 };

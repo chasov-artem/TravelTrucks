@@ -11,7 +11,7 @@ export const fetchAllCampers = async (params = {}) => {
       page: params.page || 1, // Значення за замовчуванням для `page`
       limit: params.limit || 4, // Значення за замовчуванням для `limit`
       location: params.location || undefined,
-      form: params.type || undefined,
+      form: params.form || undefined,
       AC: params.amenities?.includes("AC") || undefined,
       kitchen: params.amenities?.includes("kitchen") || undefined,
       bathroom: params.amenities?.includes("bathroom") || undefined,

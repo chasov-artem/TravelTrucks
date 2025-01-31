@@ -2,11 +2,9 @@ import s from "./LoadMoreButton.module.css";
 
 const LoadMoreButton = ({ onClick, isLoading }) => {
   return (
-    <button
-      onClick={onClick}
-      className={s.loadMore}
-      disabled={isLoading}
-    ></button>
+    <button onClick={onClick} className={s.loadMore} disabled={isLoading}>
+      LoadMore
+    </button>
   );
 };
 export default LoadMoreButton;

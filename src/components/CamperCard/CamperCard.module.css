@@ -117,3 +117,8 @@
   width: 166px;
   text-align: center;
 }
+
+.link:hover,
+.link:active {
+  background-color: #d84343;
+}

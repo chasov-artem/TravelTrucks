@@ -1,61 +1,57 @@
 .filterBar {
+  width: 360px;
+}
+
+.allFiltersWrap {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 24px;
-  background-color: #f7f7f7;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.locationLabel {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #6c717b;
+  margin-bottom: 8px;
+}
+
+.locationInput {
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 18px 218px 18px 20px;
+  width: 360px;
+  height: 56px;
+  background-color: #f7f7f7;
+  border: none;
+  margin-bottom: 40px;
 }
 
-.filterGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.filterLabel {
+.filtersText {
   font-weight: 500;
   font-size: 16px;
-  color: #333;
+  line-height: 150%;
+  color: #475467;
+  margin-bottom: 32px;
 }
 
-.filterInput {
-  padding: 10px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  background-color: white;
+.filtersTitle {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 120%;
+  color: #101828;
+  border-bottom: 1px solid #dadde1;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
 }
 
-.filterInput:focus {
-  border-color: #e44848;
-}
-
-.filterSelect {
-  padding: 10px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  background-color: white;
-}
-
-.filterSelect:focus {
-  border-color: #e44848;
-}
-
-.amenitiesGroup {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 12px;
-}
-
-.checkboxWrap {
+.filtersWrap {
   border: 1px solid #dadde1;
   border-radius: 12px;
-  padding: 12px;
+  padding: 16px 40px;
+  width: 112px;
+  height: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,24 +60,85 @@
   transition: all 0.2s ease-in-out;
 }
 
-.checkboxWrap:hover,
-.checkboxWrap:active,
-.checkboxWrap.active {
-  border-color: #e44848;
+.filtersLabel {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #101828;
 }
 
-.amenityLabel {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #555;
-  cursor: pointer;
-}
-
-.amenityCheckbox {
+.filtersItem {
   width: 16px;
   height: 16px;
   accent-color: #e44848;
+  display: none;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.radioWrap {
+  border: 1px solid #dadde1;
+  border-radius: 12px;
+  padding: 16px 40px;
+  width: 112px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.radioLabel {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #101828;
+}
+
+.filtersWrap.active,
+.radioWrap.active {
+  border-color: #e44848;
+  background-color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+.filtersItem,
+.radioWrap input[type="radio"] {
+  display: none;
+}
+
+.searchButton {
+  border-radius: 200px;
+  padding: 16px 60px;
+  width: 166px;
+  height: 56px;
+  background-color: #e44848;
+  transition: background 0.2s ease-in-out;
+
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -0.01em;
+  color: white;
+}
+
+.searchButton:hover {
+  background-color: #d84343;
+}
+
+.filtersWrap input[type="checkbox"],
+.radioWrap input[type="radio"] {
   display: none;
 }
