@@ -8,6 +8,9 @@ const Features = ({ camper }) => {
 
   // Функція для форматування назв (наприклад, "panelTruck" -> "Panel truck")
   const formatName = (name) => {
+    if (name === "AC") {
+      return name;
+    }
     return name
       .replace(/([A-Z])/g, " $1")
       .split(" ")
