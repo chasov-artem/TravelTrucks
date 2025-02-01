@@ -1,8 +1,34 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import s from "./CamperCard.module.css";
 
 const CamperCard = ({ camper }) => {
   const imageUrl = camper.gallery[0].thumb;
+
+  const getFavoritesFromStorage = () => {
+    const storedFavorites = localStorage.getItem("favorites");
+    return storedFavorites ? JSON.parse(storedFavorites) : [];
+  };
+
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const favorites = getFavoritesFromStorage();
+    setIsFavorite(favorites.includes(camper.id));
+  }, [camper.id]);
+
+  const toggleFavorite = () => {
+    let favorites = getFavoritesFromStorage();
+
+    if (favorites.includes(camper.id)) {
+      favorites = favorites.filter((id) => id !== camper.id);
+    } else {
+      favorites.push(camper.id);
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    setIsFavorite(favorites.includes(camper.id));
+  };
 
   return (
     <li className={s.card}>
@@ -11,7 +37,12 @@ const CamperCard = ({ camper }) => {
         <div className={s.header}>
           <div className={s.priceNameWrap}>
             <h2 className={s.name}>{camper.name}</h2>
-            <h2 className={s.price}>€{camper.price}.00</h2>
+            <div className={s.priceWrap}>
+              <h2 className={s.price}>€{camper.price}.00</h2>
+              <button className={s.favoriteButton} onClick={toggleFavorite}>
+                {isFavorite ? " Unfavorite" : " Favourite"}
+              </button>
+            </div>
           </div>
           <div className={s.rating}>
             <p className={s.raitingText}>{camper.rating}</p>

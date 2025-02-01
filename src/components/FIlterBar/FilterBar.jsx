@@ -16,8 +16,8 @@ const FilterBar = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([
     ...filters.amenities,
   ]);
+  const [isFocused, setIsFocused] = useState(false); // Стан для фокусу
 
-  // Змінюємо значення у локальному стані (але не в Redux)
   const toggleAmenity = (value) => {
     setSelectedAmenities((prev) =>
       prev.includes(value)
@@ -47,14 +47,28 @@ const FilterBar = () => {
       <label className={s.locationLabel} htmlFor="Location">
         Location
       </label>
-      <input
-        id="Location"
-        type="text"
-        value={tempLocation}
-        onChange={(e) => setTempLocation(e.target.value)}
-        onKeyDown={handleKeyDown} // Додаємо обробник Enter
-        className={s.locationInput}
-      />
+      <div className={s.locationInputWrapper}>
+        <svg className={s.locationIcon}>
+          <use
+            href={
+              isFocused
+                ? "/icons/icons.svg#icon-Map"
+                : "/icons/icons.svg#icon-Map-1"
+            }
+          ></use>
+        </svg>
+        <input
+          id="Location"
+          type="text"
+          value={tempLocation}
+          placeholder="City"
+          onChange={(e) => setTempLocation(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className={s.locationInput}
+        />
+      </div>
 
       <p className={s.filtersText}>Filters</p>
       <div className={s.filtersContainer}>
@@ -67,8 +81,8 @@ const FilterBar = () => {
                 selectedAmenities.includes(item) ? s.active : ""
               }`}
               onClick={() => toggleAmenity(item)}
-              onKeyDown={(e) => e.key === "Enter" && toggleAmenity(item)} // Обробка Enter
-              tabIndex={0} // Додає можливість навігації через Tab
+              onKeyDown={(e) => e.key === "Enter" && toggleAmenity(item)}
+              tabIndex={0}
             >
               <input
                 type="checkbox"
@@ -94,8 +108,8 @@ const FilterBar = () => {
                 selectedType === value ? s.active : ""
               }`}
               onClick={() => handleTypeChange(value)}
-              onKeyDown={(e) => e.key === "Enter" && handleTypeChange(value)} // Обробка Enter
-              tabIndex={0} // Додає можливість вибору через Tab
+              onKeyDown={(e) => e.key === "Enter" && handleTypeChange(value)}
+              tabIndex={0}
             >
               <input
                 className={s.radioItem}
