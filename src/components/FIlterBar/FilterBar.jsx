@@ -7,6 +7,20 @@ import {
 import { useState } from "react";
 import s from "./FilterBar.module.css";
 
+const amenitiesIcons = {
+  AC: "/icons/icons.svg#icon-wind",
+  Automatic: "/icons/icons.svg#icon-diagram",
+  Kitchen: "/icons/icons.svg#icon-cup-hot",
+  TV: "/icons/icons.svg#icon-tv",
+  Bathroom: "/icons/icons.svg#icon-ph_shower",
+};
+
+const vehicleTypeIcons = {
+  Van: "/icons/icons.svg#icon-bi_grid-1x2",
+  FullyIntegrated: "/icons/icons.svg#icon-bi_grid",
+  Alcove: "/icons/icons.svg#icon-bi_grid-3x3-gap",
+};
+
 const FilterBar = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
@@ -16,7 +30,7 @@ const FilterBar = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([
     ...filters.amenities,
   ]);
-  const [isFocused, setIsFocused] = useState(false); // Стан для фокусу
+  const [isFocused, setIsFocused] = useState(false);
 
   const toggleAmenity = (value) => {
     setSelectedAmenities((prev) =>
@@ -74,7 +88,7 @@ const FilterBar = () => {
       <div className={s.filtersContainer}>
         <h3 className={s.filtersTitle}>Vehicle equipment</h3>
         <div className={s.allFiltersWrap}>
-          {["AC", "TV", "Kitchen", "Bathroom", "Automatic"].map((item) => (
+          {Object.keys(amenitiesIcons).map((item) => (
             <div
               key={item}
               className={`${s.filtersWrap} ${
@@ -84,12 +98,9 @@ const FilterBar = () => {
               onKeyDown={(e) => e.key === "Enter" && toggleAmenity(item)}
               tabIndex={0}
             >
-              <input
-                type="checkbox"
-                value={item}
-                checked={selectedAmenities.includes(item)}
-                readOnly
-              />
+              <svg className={s.filterIcon}>
+                <use href={amenitiesIcons[item]}></use>
+              </svg>
               <label className={s.filtersLabel}>{item}</label>
             </div>
           ))}
@@ -97,11 +108,7 @@ const FilterBar = () => {
 
         <h3 className={s.filtersTitle}>Vehicle type</h3>
         <div className={s.radioGroup}>
-          {[
-            { label: "Van", value: "van" },
-            { label: "Fully Integrated", value: "fullyIntegrated" },
-            { label: "Alcove", value: "alcove" },
-          ].map(({ label, value }) => (
+          {Object.entries(vehicleTypeIcons).map(([value, icon]) => (
             <div
               key={value}
               className={`${s.radioWrap} ${
@@ -111,15 +118,12 @@ const FilterBar = () => {
               onKeyDown={(e) => e.key === "Enter" && handleTypeChange(value)}
               tabIndex={0}
             >
-              <input
-                className={s.radioItem}
-                type="radio"
-                name="vehicleType"
-                value={value}
-                checked={selectedType === value}
-                readOnly
-              />
-              <label className={s.radioLabel}>{label}</label>
+              <svg className={s.radioIcon}>
+                <use href={icon} width="32" height="32"></use>
+              </svg>
+              <label className={s.radioLabel}>
+                {value.replace(/([A-Z])/g, " $1")}
+              </label>
             </div>
           ))}
         </div>
