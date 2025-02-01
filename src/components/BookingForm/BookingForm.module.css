@@ -137,8 +137,9 @@
   margin-top: 24px;
 }
 
-.submitButton:hover {
-  background-color: #d43c3c;
+.submitButton:hover,
+.submitButton:active {
+  background-color: #d84343;
 }
 
 .submitButton:disabled {
