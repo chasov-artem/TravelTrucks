@@ -40,6 +40,7 @@
 
 .priceWrap {
   display: flex;
+  gap: 12px;
 }
 
 .price {
@@ -49,9 +50,22 @@
   color: #101828;
 }
 
+.favoriteIcon {
+  width: 26px;
+  height: 24px;
+}
+
 .rating {
   display: flex;
+  justify-content: left;
+  align-items: center;
   margin-bottom: 24px;
+}
+
+.ratingIcon {
+  width: 16px;
+  height: 15px;
+  margin-right: 4px;
 }
 
 .raitingText {
