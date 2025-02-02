@@ -1,9 +1,10 @@
-import s from "./Reviews.module.css";
+import s from "./ReviewsSection.module.css";
 
 const ReviewsSection = ({ reviews }) => {
   if (!reviews.length) {
-    return <p>No reviews available</p>;
+    return <p>There is no comment.</p>;
   }
+
   return (
     <div className={s.reviews}>
       {reviews.length > 0 ? (
@@ -15,17 +16,38 @@ const ReviewsSection = ({ reviews }) => {
               </div>
               <div className={s.content}>
                 <strong className={s.name}>{review.reviewer_name}</strong>
-                <p className={s.rating}>Rating: {review.reviewer_rating} / 5</p>
+                <p className={s.rating}>
+                  {renderRatingStars(review.reviewer_rating)}
+                </p>
               </div>
             </div>
             <p className={s.comment}>{review.comment}</p>
           </div>
         ))
       ) : (
-        <p>No reviews yet.</p>
+        <p>There is no comment.</p>
       )}
     </div>
   );
+};
+
+const renderRatingStars = (rating) => {
+  const stars = [];
+  for (let i = 0; i < rating; i++) {
+    stars.push(
+      <svg key={i} className={s.starIcon}>
+        <use href="/icons/icons.svg#star-yellow"></use>
+      </svg>
+    );
+  }
+  for (let i = rating; i < 5; i++) {
+    stars.push(
+      <svg key={i} className={s.starIcon}>
+        <use href="/icons/icons.svg#star"></use>
+      </svg>
+    );
+  }
+  return stars;
 };
 
 export default ReviewsSection;

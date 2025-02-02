@@ -58,17 +58,18 @@ const CamperCard = ({ camper }) => {
       water: "icon-ion_water-outline",
     };
 
+    //лишив лише ті amenities що на макеті, але якщо треба можна розкоментувати, щоб відображались всі що true
     const requiredAmenities = ["transmission", "engine"];
     const optionalAmenities = [
-      "AC",
-      "bathroom",
       "kitchen",
-      "TV",
-      "radio",
-      "refrigerator",
-      "microwave",
-      "gas",
-      "water",
+      "AC",
+      // "bathroom",
+      // "TV",
+      // "radio",
+      // "refrigerator",
+      // "microwave",
+      // "gas",
+      // "water",
     ];
 
     requiredAmenities.forEach((amenity) => {

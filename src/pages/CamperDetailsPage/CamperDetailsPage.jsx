@@ -4,7 +4,7 @@ import {
   fetchCampers,
   selectCampers,
   selectIsLoading,
-} from "../../redux/campers/campersSlice"; // Додано selectIsLoading
+} from "../../redux/campers/campersSlice";
 import { selectFavorites } from "../../redux/favorites/favoritesSlice";
 import { useEffect, useState } from "react";
 import Loader from "../../components/Loader/Loader";
@@ -19,7 +19,7 @@ const CamperDetailsPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const campers = useSelector(selectCampers);
-  const isLoading = useSelector(selectIsLoading); // Додано стан завантаження
+  const isLoading = useSelector(selectIsLoading);
   const favorites = useSelector(selectFavorites);
   const [activeTab, setActiveTab] = useState("features");
 
@@ -31,7 +31,6 @@ const CamperDetailsPage = () => {
 
   const camper = campers.find((camper) => camper.id === id);
 
-  // Показуємо Loader, якщо дані ще завантажуються або кемпер не знайдений
   if (isLoading || !camper) {
     return <Loader />;
   }

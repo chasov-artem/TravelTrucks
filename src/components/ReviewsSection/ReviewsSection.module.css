@@ -5,8 +5,8 @@
 .review {
   align-items: center;
   gap: 12px;
-  padding: 16px;
   border-radius: 8px;
+  margin-top: 24px;
 }
 
 .avatarRating {
@@ -14,6 +14,11 @@
   align-items: center;
   gap: 16px;
   margin-bottom: 16px;
+}
+
+.starIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .avatar {
@@ -41,6 +46,8 @@
 }
 
 .rating {
+  display: flex;
+  gap: 4px;
   font-size: 14px;
   color: #555;
   margin: 4px 0;
