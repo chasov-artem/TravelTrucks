@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import {
   setLocation,
   setType,
   setAmenities,
 } from "../../redux/filters/filtersSlice";
-import { useState } from "react";
 import s from "./FilterBar.module.css";
 
 const amenitiesIcons = {
@@ -25,12 +25,24 @@ const FilterBar = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
 
-  const [tempLocation, setTempLocation] = useState(filters.location);
+  const formatLocation = (location) => {
+    if (!location) return "";
+    const parts = location.split(", ").map((part) => part.trim());
+    return parts.length === 2 ? `${parts[1]}, ${parts[0]}` : location;
+  };
+
+  const [tempLocation, setTempLocation] = useState(
+    formatLocation(filters.location)
+  );
   const [selectedType, setSelectedType] = useState(filters.type);
   const [selectedAmenities, setSelectedAmenities] = useState([
     ...filters.amenities,
   ]);
   const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    setTempLocation(formatLocation(filters.location));
+  }, [filters.location]);
 
   const toggleAmenity = (value) => {
     setSelectedAmenities((prev) =>
@@ -45,7 +57,8 @@ const FilterBar = () => {
   };
 
   const handleApplyFilters = () => {
-    dispatch(setLocation(tempLocation));
+    const formattedLocation = formatLocation(tempLocation);
+    dispatch(setLocation(formattedLocation));
     dispatch(setType(selectedType));
     dispatch(setAmenities(selectedAmenities));
   };
@@ -122,7 +135,7 @@ const FilterBar = () => {
                 <use href={icon} width="32" height="32"></use>
               </svg>
               <label className={s.radioLabel}>
-                {value.replace(/([A-Z])/g, " $1")}
+                {value.replace(/([A-Z])/g, " $1").trim()}
               </label>
             </div>
           ))}

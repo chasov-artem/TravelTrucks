@@ -30,6 +30,16 @@ const CamperCard = ({ camper }) => {
     setIsFavorite(favorites.includes(camper.id));
   };
 
+  const swapCityAndCountry = (locationString) => {
+    const parts = locationString.split(",");
+    if (parts.length !== 2) {
+      return locationString;
+    }
+    const [country, city] = parts;
+    const newLocation = `${city.trim()}, ${country.trim()}`;
+    return newLocation;
+  };
+
   const formatName = (name) => {
     if (name === "AC") {
       return name;
@@ -130,7 +140,7 @@ const CamperCard = ({ camper }) => {
             <svg className={s.ratingIcon}>
               <use href="/icons/icons.svg#icon-Map"></use>
             </svg>
-            <p className={s.location}>{camper.location}</p>
+            <p className={s.location}>{swapCityAndCountry(camper.location)}</p>
           </div>
         </div>
         <p className={s.description}>{camper.description}</p>
