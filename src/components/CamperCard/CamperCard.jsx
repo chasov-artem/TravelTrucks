@@ -121,7 +121,7 @@ const CamperCard = ({ camper }) => {
               <button className={s.favoriteButton} onClick={toggleFavorite}>
                 {isFavorite ? (
                   <svg className={s.favoriteIcon}>
-                    <use href="/icons/icons.svg#icon-heard-red"></use>
+                    <use href="/icons/icons.svg#icon-heart-red"></use>
                   </svg>
                 ) : (
                   <svg className={s.favoriteIcon}>
