@@ -4,7 +4,6 @@
   border-radius: 20px;
   padding: 24px;
   width: 888px;
-  height: 368px;
   overflow: hidden;
 }
 
@@ -139,4 +138,9 @@
 .link:hover,
 .link:active {
   background-color: #d84343;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
 }

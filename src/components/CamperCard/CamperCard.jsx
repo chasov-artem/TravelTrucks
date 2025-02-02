@@ -30,6 +30,74 @@ const CamperCard = ({ camper }) => {
     setIsFavorite(favorites.includes(camper.id));
   };
 
+  const formatName = (name) => {
+    if (name === "AC") {
+      return name;
+    }
+    return name
+      .replace(/([A-Z])/g, " $1")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  const renderAmenities = () => {
+    const amenitiesList = [];
+
+    const amenityIcons = {
+      transmission: "icon-diagram",
+      engine: "icon-fuel-pump",
+      AC: "icon-wind",
+      bathroom: "icon-ph_shower",
+      kitchen: "icon-cup-hot",
+      TV: "icon-tv",
+      radio: "icon-ui-radios",
+      refrigerator: "icon-solar_fridge-outline",
+      microwave: "icon-lucide_microwave",
+      gas: "icon-hugeicons_gas-stove",
+      water: "icon-ion_water-outline",
+    };
+
+    const requiredAmenities = ["transmission", "engine"];
+    const optionalAmenities = [
+      "AC",
+      "bathroom",
+      "kitchen",
+      "TV",
+      "radio",
+      "refrigerator",
+      "microwave",
+      "gas",
+      "water",
+    ];
+
+    requiredAmenities.forEach((amenity) => {
+      amenitiesList.push(
+        <span className={s.amenity} key={amenity}>
+          <svg className={s.icon}>
+            <use href={`/icons/icons.svg#${amenityIcons[amenity]}`}></use>
+          </svg>
+          {formatName(camper[amenity])}
+        </span>
+      );
+    });
+
+    optionalAmenities.forEach((amenity) => {
+      if (camper[amenity] === true) {
+        amenitiesList.push(
+          <span className={s.amenity} key={amenity}>
+            <svg className={s.icon}>
+              <use href={`/icons/icons.svg#${amenityIcons[amenity]}`}></use>
+            </svg>
+            {formatName(amenity)}
+          </span>
+        );
+      }
+    });
+
+    return amenitiesList;
+  };
+
   return (
     <li className={s.card}>
       <img src={imageUrl} alt={camper.name} className={s.image} />
@@ -65,12 +133,7 @@ const CamperCard = ({ camper }) => {
           </div>
         </div>
         <p className={s.description}>{camper.description}</p>
-        <div className={s.amenities}>
-          {camper.transmission && <span>Automatic</span>}
-          {camper.engine && <span>Petrol</span>}
-          {camper.kitchen && <span>Kitchen</span>}
-          {camper.AC && <span>AC</span>}
-        </div>
+        <div className={s.amenities}>{renderAmenities()}</div>
         <Link to={`/catalog/${camper.id}`} className={s.link}>
           Show More
         </Link>
