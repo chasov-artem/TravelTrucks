@@ -5,7 +5,7 @@ import {
   selectIsLoading,
   selectError,
 } from "../../redux/campers/campersSlice";
-import FilterBar from "../../components/FilterBar/FilterBar.jsx";
+import FilterBar from "../../components/FIlterBar/FilterBar.jsx";
 import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
 import s from "./CatalogPage.module.css";
 import { CamperList } from "../../components/CamperList/CamperList";
