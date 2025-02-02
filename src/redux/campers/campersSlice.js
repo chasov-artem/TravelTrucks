@@ -9,7 +9,7 @@ export const fetchCampers = createAsyncThunk(
 const campersSlice = createSlice({
   name: "campers",
   initialState: {
-    items: [], // Масив кемперів (серіалізований)
+    items: [],
     isLoading: false,
     error: null,
   },
@@ -22,11 +22,11 @@ const campersSlice = createSlice({
       })
       .addCase(fetchCampers.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload; // Зберігаємо масив кемперів
+        state.items = action.payload;
       })
       .addCase(fetchCampers.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload; // Зберігаємо повідомлення про помилку
+        state.error = action.payload;
       });
   },
 });
