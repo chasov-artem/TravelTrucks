@@ -53,7 +53,7 @@ const FilterBar = () => {
   }, []);
 
   const handleFormChange = useCallback((value) => {
-    setSelectedForm(value);
+    setSelectedForm((prev) => (prev === value ? "" : value));
   }, []);
 
   const handleApplyFilters = useCallback(() => {
