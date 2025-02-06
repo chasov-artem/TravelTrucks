@@ -31,9 +31,9 @@ const CatalogPage = () => {
   useEffect(() => {
     const formattedFilters = {
       page,
-      limit: 3,
+      limit: 4,
       location: filters.location || undefined,
-      type: filters.type || undefined,
+      form: filters.form || undefined,
       amenities: filters.amenities || [],
     };
 

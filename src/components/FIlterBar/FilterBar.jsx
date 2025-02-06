@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   setLocation,
-  setType,
+  setForm,
   setAmenities,
 } from "../../redux/filters/filtersSlice";
 import s from "./FilterBar.module.css";
@@ -25,16 +25,16 @@ const FilterBar = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
 
-  const formatLocation = (location) => {
+  const formatLocation = useCallback((location) => {
     if (!location) return "";
     const parts = location.split(", ").map((part) => part.trim());
     return parts.length === 2 ? `${parts[1]}, ${parts[0]}` : location;
-  };
+  }, []);
 
   const [tempLocation, setTempLocation] = useState(
     formatLocation(filters.location)
   );
-  const [selectedType, setSelectedType] = useState(filters.type);
+  const [selectedForm, setSelectedForm] = useState(filters.form);
   const [selectedAmenities, setSelectedAmenities] = useState([
     ...filters.amenities,
   ]);
@@ -42,32 +42,36 @@ const FilterBar = () => {
 
   useEffect(() => {
     setTempLocation(formatLocation(filters.location));
-  }, [filters.location]);
+  }, [filters.location, formatLocation]);
 
-  const toggleAmenity = (value) => {
+  const toggleAmenity = useCallback((value) => {
     setSelectedAmenities((prev) =>
       prev.includes(value)
         ? prev.filter((item) => item !== value)
         : [...prev, value]
     );
-  };
+  }, []);
 
-  const handleTypeChange = (value) => {
-    setSelectedType(value);
-  };
+  const handleFormChange = useCallback((value) => {
+    setSelectedForm(value);
+  }, []);
 
-  const handleApplyFilters = () => {
-    const formattedLocation = formatLocation(tempLocation);
-    dispatch(setLocation(formattedLocation));
-    dispatch(setType(selectedType));
+  const handleApplyFilters = useCallback(() => {
+    const formattedForm = selectedForm === "Van" ? "panelTruck" : selectedForm;
+
+    dispatch(setLocation(formatLocation(tempLocation)));
+    dispatch(setForm(formattedForm));
     dispatch(setAmenities(selectedAmenities));
-  };
+  }, [dispatch, tempLocation, selectedForm, selectedAmenities, formatLocation]);
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleApplyFilters();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        handleApplyFilters();
+      }
+    },
+    [handleApplyFilters]
+  );
 
   return (
     <div className={s.filterBar}>
@@ -101,18 +105,19 @@ const FilterBar = () => {
       <div className={s.filtersContainer}>
         <h3 className={s.filtersTitle}>Vehicle equipment</h3>
         <div className={s.allFiltersWrap}>
-          {Object.keys(amenitiesIcons).map((item) => (
+          {Object.entries(amenitiesIcons).map(([item, icon]) => (
             <div
               key={item}
               className={`${s.filtersWrap} ${
                 selectedAmenities.includes(item) ? s.active : ""
               }`}
               onClick={() => toggleAmenity(item)}
-              onKeyDown={(e) => e.key === "Enter" && toggleAmenity(item)}
               tabIndex={0}
+              role="button"
+              onKeyDown={(e) => e.key === "Enter" && toggleAmenity(item)}
             >
               <svg className={s.filterIcon}>
-                <use href={amenitiesIcons[item]}></use>
+                <use href={icon}></use>
               </svg>
               <label className={s.filtersLabel}>{item}</label>
             </div>
@@ -125,14 +130,15 @@ const FilterBar = () => {
             <div
               key={value}
               className={`${s.radioWrap} ${
-                selectedType === value ? s.active : ""
+                selectedForm === value ? s.active : ""
               }`}
-              onClick={() => handleTypeChange(value)}
-              onKeyDown={(e) => e.key === "Enter" && handleTypeChange(value)}
+              onClick={() => handleFormChange(value)}
               tabIndex={0}
+              role="button"
+              onKeyDown={(e) => e.key === "Enter" && handleFormChange(value)}
             >
               <svg className={s.radioIcon}>
-                <use href={icon} width="32" height="32"></use>
+                <use href={icon}></use>
               </svg>
               <label className={s.radioLabel}>
                 {value.replace(/([A-Z])/g, " $1").trim()}

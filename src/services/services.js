@@ -10,8 +10,9 @@ export const fetchAllCampers = async (params = {}) => {
       location: params.location || undefined,
       form: params.form || undefined,
       AC: params.amenities?.includes("AC") || undefined,
-      kitchen: params.amenities?.includes("kitchen") || undefined,
-      bathroom: params.amenities?.includes("bathroom") || undefined,
+      kitchen: params.amenities?.includes("Kitchen") || undefined,
+      bathroom: params.amenities?.includes("Bathroom") || undefined,
+      TV: params.amenities?.includes("TV") || undefined,
       transmission: params.amenities?.includes("Automatic")
         ? "automatic"
         : undefined,
