@@ -1,13 +1,12 @@
-import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import s from "./BookingForm.module.css";
 import * as Yup from "yup";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
 const BookingForm = () => {
-  const [notification, setNotification] = useState(null);
-
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     email: Yup.string()
@@ -23,9 +22,12 @@ const BookingForm = () => {
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     setTimeout(() => {
-      setNotification(
-        "Booking successful! Thank you for choosing our service."
-      );
+      iziToast.success({
+        title: "Success",
+        message: "Your booking request has been sent!",
+        position: "topRight",
+      });
+
       resetForm();
       setSubmitting(false);
     }, 1000);
@@ -121,8 +123,6 @@ const BookingForm = () => {
             >
               Send
             </button>
-
-            {notification && <p className={s.notification}>{notification}</p>}
           </Form>
         )}
       </Formik>
