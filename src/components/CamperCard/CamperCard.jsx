@@ -1,88 +1,50 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  toggleFavorite,
+  selectFavorites,
+} from "../../redux/favorites/favoritesSlice";
 import s from "./CamperCard.module.css";
 
 const CamperCard = ({ camper }) => {
-  const imageUrl = camper.gallery[0].thumb;
-
-  const getFavoritesFromStorage = () => {
-    const storedFavorites = localStorage.getItem("favorites");
-    return storedFavorites ? JSON.parse(storedFavorites) : [];
-  };
-
+  const dispatch = useDispatch();
+  const favorites = useSelector(selectFavorites);
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    const favorites = getFavoritesFromStorage();
-    setIsFavorite(favorites.includes(camper.id));
-  }, [camper.id]);
+    setIsFavorite(favorites.some((fav) => fav.id === camper.id));
+  }, [favorites, camper.id]);
 
-  const toggleFavorite = () => {
-    let favorites = getFavoritesFromStorage();
-
-    if (favorites.includes(camper.id)) {
-      favorites = favorites.filter((id) => id !== camper.id);
-    } else {
-      favorites.push(camper.id);
-    }
-
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    setIsFavorite(favorites.includes(camper.id));
+  const handleToggleFavorite = () => {
+    dispatch(toggleFavorite(camper));
   };
 
   const swapCityAndCountry = (locationString) => {
     const parts = locationString.split(",");
-    if (parts.length !== 2) {
-      return locationString;
-    }
-    const [country, city] = parts;
-    const newLocation = `${city.trim()}, ${country.trim()}`;
-    return newLocation;
+    return parts.length === 2
+      ? `${parts[1].trim()}, ${parts[0].trim()}`
+      : locationString;
   };
 
-  const formatName = (name) => {
-    if (name === "AC") {
-      return name;
-    }
-    return name
-      .replace(/([A-Z])/g, " $1")
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
+  const formatName = (name) =>
+    name === "AC"
+      ? name
+      : name
+          .replace(/([A-Z])/g, " $1")
+          .replace(/^\s/, "")
+          .replace(/\b\w/g, (c) => c.toUpperCase());
 
   const renderAmenities = () => {
     const amenitiesList = [];
-
     const amenityIcons = {
       transmission: "icon-diagram",
       engine: "icon-fuel-pump",
       AC: "icon-wind",
-      bathroom: "icon-ph_shower",
       kitchen: "icon-cup-hot",
-      TV: "icon-tv",
-      radio: "icon-ui-radios",
-      refrigerator: "icon-solar_fridge-outline",
-      microwave: "icon-lucide_microwave",
-      gas: "icon-hugeicons_gas-stove",
-      water: "icon-ion_water-outline",
     };
 
-    //лишив лише ті amenities що на макеті, але якщо треба можна розкоментувати, щоб відображались всі що true
-    const requiredAmenities = ["transmission", "engine"];
-    const optionalAmenities = [
-      "kitchen",
-      "AC",
-      // "bathroom",
-      // "TV",
-      // "radio",
-      // "refrigerator",
-      // "microwave",
-      // "gas",
-      // "water",
-    ];
-
-    requiredAmenities.forEach((amenity) => {
+    ["transmission", "engine"].forEach((amenity) =>
       amenitiesList.push(
         <span className={s.amenity} key={amenity}>
           <svg className={s.icon}>
@@ -90,44 +52,48 @@ const CamperCard = ({ camper }) => {
           </svg>
           {formatName(camper[amenity])}
         </span>
-      );
-    });
+      )
+    );
 
-    optionalAmenities.forEach((amenity) => {
-      if (camper[amenity] === true) {
-        amenitiesList.push(
+    ["kitchen", "AC"].forEach(
+      (amenity) =>
+        camper[amenity] && (
           <span className={s.amenity} key={amenity}>
             <svg className={s.icon}>
               <use href={`/icons/icons.svg#${amenityIcons[amenity]}`}></use>
             </svg>
             {formatName(amenity)}
           </span>
-        );
-      }
-    });
+        )
+    );
 
     return amenitiesList;
   };
 
   return (
     <li className={s.card}>
-      <img src={imageUrl} alt={camper.name} className={s.image} />
+      <img
+        src={camper.gallery[0].thumb}
+        alt={camper.name}
+        className={s.image}
+      />
       <div className={s.details}>
         <div className={s.header}>
           <div className={s.priceNameWrap}>
             <h2 className={s.name}>{camper.name}</h2>
             <div className={s.priceWrap}>
               <h2 className={s.price}>€{camper.price}.00</h2>
-              <button className={s.favoriteButton} onClick={toggleFavorite}>
-                {isFavorite ? (
-                  <svg className={s.favoriteIcon}>
-                    <use href="/icons/icons.svg#icon-heart-red"></use>
-                  </svg>
-                ) : (
-                  <svg className={s.favoriteIcon}>
-                    <use href="/icons/icons.svg#icon-heart"></use>
-                  </svg>
-                )}
+              <button
+                className={s.favoriteButton}
+                onClick={handleToggleFavorite}
+              >
+                <svg className={s.favoriteIcon}>
+                  <use
+                    href={`/icons/icons.svg#icon-heart${
+                      isFavorite ? "-red" : ""
+                    }`}
+                  ></use>
+                </svg>
               </button>
             </div>
           </div>
@@ -135,7 +101,7 @@ const CamperCard = ({ camper }) => {
             <svg className={s.ratingIcon}>
               <use href="/icons/icons.svg#star-yellow"></use>
             </svg>
-            <p className={s.raitingText}>{camper.rating}</p>
+            <p className={s.ratingText}>{camper.rating}</p>
             <p className={s.reviews}>({camper.reviews.length} Reviews)</p>
             <svg className={s.ratingIcon}>
               <use href="/icons/icons.svg#icon-Map"></use>

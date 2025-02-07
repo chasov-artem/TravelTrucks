@@ -1,29 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-const loadFavoritesFromLocalStorage = () => {
-  const storedFavorites = localStorage.getItem("favorites");
-  return storedFavorites ? JSON.parse(storedFavorites) : [];
-};
+import { createSelector } from "reselect";
 
 const favoritesSlice = createSlice({
   name: "favorites",
-  initialState: loadFavoritesFromLocalStorage(),
+  initialState: {
+    favorites: [],
+  },
   reducers: {
     toggleFavorite: (state, action) => {
-      const index = state.findIndex(
+      if (!Array.isArray(state.favorites)) {
+        state.favorites = [];
+      }
+
+      const index = state.favorites.findIndex(
         (camper) => camper.id === action.payload.id
       );
       if (index !== -1) {
-        state.splice(index, 1);
+        state.favorites.splice(index, 1);
       } else {
-        state.push(action.payload);
+        state.favorites.push(action.payload);
       }
-      localStorage.setItem("favorites", JSON.stringify(state));
     },
   },
 });
 
 export const { toggleFavorite } = favoritesSlice.actions;
-export const selectFavorites = (state) => state.favorites;
+
+export const selectFavorites = createSelector(
+  (state) => state.favorites.favorites,
+  (favorites) => {
+    if (Array.isArray(favorites)) {
+      return [...favorites];
+    }
+    console.error("Favorites state is not an array:", favorites);
+    return [];
+  }
+);
 
 export default favoritesSlice.reducer;
