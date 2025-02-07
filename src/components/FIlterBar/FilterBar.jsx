@@ -34,7 +34,9 @@ const FilterBar = () => {
   const [tempLocation, setTempLocation] = useState(
     formatLocation(filters.location)
   );
-  const [selectedForm, setSelectedForm] = useState(filters.form);
+  const [selectedForm, setSelectedForm] = useState(
+    filters.form === "panelTruck" ? "Van" : filters.form
+  );
   const [selectedAmenities, setSelectedAmenities] = useState([
     ...filters.amenities,
   ]);
@@ -43,6 +45,10 @@ const FilterBar = () => {
   useEffect(() => {
     setTempLocation(formatLocation(filters.location));
   }, [filters.location, formatLocation]);
+
+  useEffect(() => {
+    setSelectedForm(filters.form === "panelTruck" ? "Van" : filters.form);
+  }, [filters.form]);
 
   const toggleAmenity = useCallback((value) => {
     setSelectedAmenities((prev) =>
@@ -58,7 +64,6 @@ const FilterBar = () => {
 
   const handleApplyFilters = useCallback(() => {
     const formattedForm = selectedForm === "Van" ? "panelTruck" : selectedForm;
-
     dispatch(setLocation(formatLocation(tempLocation)));
     dispatch(setForm(formattedForm));
     dispatch(setAmenities(selectedAmenities));
