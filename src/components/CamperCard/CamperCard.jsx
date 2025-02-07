@@ -82,7 +82,7 @@ const CamperCard = ({ camper }) => {
           <div className={s.priceNameWrap}>
             <h2 className={s.name}>{camper.name}</h2>
             <div className={s.priceWrap}>
-              <h2 className={s.price}>€{camper.price}.00</h2>
+              <h2 className={s.price}>€{camper.price.toFixed(2)}</h2>
               <button
                 className={s.favoriteButton}
                 onClick={handleToggleFavorite}
