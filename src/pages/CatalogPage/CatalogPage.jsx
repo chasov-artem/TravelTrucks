@@ -23,8 +23,8 @@ const CatalogPage = () => {
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    setAllCampers([]);
     setPage(1);
+    setAllCampers([]);
     setHasMore(true);
   }, [filters]);
 
@@ -38,13 +38,15 @@ const CatalogPage = () => {
     };
 
     dispatch(fetchCampers(formattedFilters)).then((response) => {
+      const newCampers = response.payload || [];
+
       if (page === 1) {
-        setAllCampers(response.payload);
+        setAllCampers(newCampers);
       } else {
-        setAllCampers((prev) => [...prev, ...response.payload]);
+        setAllCampers((prev) => [...prev, ...newCampers]);
       }
 
-      if (response.payload.length === 0) {
+      if (newCampers.length < 4) {
         setHasMore(false);
       }
     });
@@ -63,6 +65,7 @@ const CatalogPage = () => {
       <FilterBar />
       <div className={s.listBtn}>
         <CamperList campers={allCampers} />
+        {isLoading && page > 1 && <Loader />}
         {!isLoading && hasMore && (
           <LoadMoreButton onClick={() => setPage((prev) => prev + 1)} />
         )}
