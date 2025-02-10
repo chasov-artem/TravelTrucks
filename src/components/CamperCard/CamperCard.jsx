@@ -27,13 +27,18 @@ const CamperCard = ({ camper }) => {
       : locationString;
   };
 
-  const formatName = (name) =>
-    name === "AC"
-      ? name
-      : name
-          .replace(/([A-Z])/g, " $1")
-          .replace(/^\s/, "")
-          .replace(/\b\w/g, (c) => c.toUpperCase());
+  const formatName = (name) => {
+    if (name === "TV") {
+      return "TV";
+    }
+    if (name === "AC") {
+      return "AC";
+    }
+    return name
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^\s/, "")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  };
 
   const renderAmenities = () => {
     const amenitiesList = [];
@@ -41,32 +46,57 @@ const CamperCard = ({ camper }) => {
       transmission: "icon-diagram",
       engine: "icon-fuel-pump",
       AC: "icon-wind",
+      bathroom: "icon-ph_shower",
       kitchen: "icon-cup-hot",
+      TV: "icon-tv",
+      radio: "icon-ui-radios",
+      refrigerator: "icon-solar_fridge-outline",
+      microwave: "icon-lucide_microwave",
+      gas: "icon-hugeicons_gas-stove",
+      water: "icon-ion_water-outline",
     };
 
-    ["transmission", "engine"].forEach((amenity) =>
-      amenitiesList.push(
-        <span className={s.amenity} key={amenity}>
-          <svg className={s.icon}>
-            <use href={`/icons/icons.svg#${amenityIcons[amenity]}`}></use>
-          </svg>
-          {formatName(camper[amenity])}
-        </span>
-      )
-    );
+    // Обов'язкові аменіті
+    ["transmission", "engine"].forEach((amenity) => {
+      if (camper[amenity]) {
+        amenitiesList.push(
+          <span className={s.amenity} key={amenity}>
+            <svg className={s.icon}>
+              <use href={`/icons/icons.svg#${amenityIcons[amenity]}`}></use>
+            </svg>
+            {formatName(camper[amenity])}
+          </span>
+        );
+      }
+    });
 
-    ["kitchen", "AC"].forEach(
-      (amenity) =>
-        camper[amenity] && (
+    // Опціональні аменіті
+    const optionalAmenities = [
+      "AC",
+      "bathroom",
+      "kitchen",
+      "TV",
+      "radio",
+      "refrigerator",
+      "microwave",
+      "gas",
+      "water",
+    ];
+
+    optionalAmenities.forEach((amenity) => {
+      if (camper[amenity] === true) {
+        amenitiesList.push(
           <span className={s.amenity} key={amenity}>
             <svg className={s.icon}>
               <use href={`/icons/icons.svg#${amenityIcons[amenity]}`}></use>
             </svg>
             {formatName(amenity)}
           </span>
-        )
-    );
+        );
+      }
+    });
 
+    console.log("Rendered Amenities:", amenitiesList);
     return amenitiesList;
   };
 
