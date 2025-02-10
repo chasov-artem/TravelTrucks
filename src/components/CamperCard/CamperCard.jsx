@@ -96,7 +96,6 @@ const CamperCard = ({ camper }) => {
       }
     });
 
-    console.log("Rendered Amenities:", amenitiesList);
     return amenitiesList;
   };
 
